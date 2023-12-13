@@ -1,0 +1,131 @@
+package rule
+
+import loyalty.team2.model.Node1;
+import loyalty.team2.model.Logic;
+import loyalty.team2.model.Condition;
+import loyalty.team2.model.Attribute1;
+import loyalty.team2.utils.Result;
+
+//import function loyalty.team2.utils.ConditionEvaluator.evaluate;
+//import function loyalty.team2.utils.ConditionEvaluator.checkCondition;
+//import function loyalty.team2.service.RuleService.findRoot;
+//import function loyalty.team2.service.RuleService.isMatchGroup;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
+function List<Node1> findChildren(Node1 node, List<Node1> nodes){
+		
+		return nodes.stream().filter(x -> x.getHeadId() == node.getNodeId()).collect(Collectors.toList());
+	}
+
+function Result evalCondition(Integer operator, Integer currentValue, Integer value){
+	Boolean isTrue = false;
+	switch(operator){
+			case 1:
+			{
+				if(currentValue > value)
+					isTrue = true;
+				System.out.println(currentValue+">"+value+"->"+isTrue);
+				break;
+			}
+			case 2:
+			{
+				if(currentValue < value)
+					isTrue = true;
+				System.out.println(currentValue+"<"+value+"->"+isTrue);
+				break;
+			}
+			case 3:
+			{
+				if(currentValue == value)
+					isTrue = true;
+				System.out.println(currentValue+"=="+value+"->"+isTrue);
+				break;
+			}	
+		}		
+		
+		Result rs = new Result(isTrue);
+		return rs;
+		//insert(rs);
+}
+
+
+
+function Result tree(Attribute1 atts, Node1 currentNode, List<Node1> nodes) {
+		Result rs = new Result(false);
+		if(currentNode.getCondition()!=null) {
+			Integer currentValue = currentNode.getCondition().getAttribute().getValue();
+			rs = this.evalCondition(currentNode.getCondition().getOperatorId(), currentValue, currentNode.getCondition().getValue());
+			return rs;
+		}
+		else {
+			List<Node1> children = findChildren(currentNode, nodes);
+			if(currentNode.getLogic().getLogicId()==1) {
+				boolean r = children.stream().allMatch(child->tree(atts, child, nodes).isTrue());
+				rs.setTrue(r);
+				return rs;
+			}
+			else if(currentNode.getLogic().getLogicId()==2) {
+				boolean r = children.stream().anyMatch(child->tree(atts, child, nodes).isTrue());
+				rs.setTrue(r);
+				return rs;
+			}					
+		}			
+		return rs;
+	}
+
+rule "find root"
+	when
+		$root: Node1(headId == null)
+	then
+		System.out.println("root: "+$root);
+		insert($root);
+	end
+
+rule "get nodes"
+when
+    $nodes : Collection() from collect( Node1() )
+then
+    System.out.println("nodes: ");
+    System.out.println($nodes);
+    insert($nodes);
+    drools.setFocus("tree");
+end
+
+rule "tree" agenda-group "tree"
+	when
+		$children: Node1()
+		$condition: Condition() from $children.condition
+		
+		$attributes: Collection() from collect( Attribute1() ) 
+	then
+		tree(attributes, $children, $nodes); 
+	end
+
+
+/*
+rule "find children"
+	when
+		$node: Node1()
+		$children: Node1(headId == $root.nodeId)
+	then
+		System.out.println("children: "+$children);
+		insert($children);
+	end
+
+rule "check condition node"
+	when
+		$children: Node1()
+		$condition: Condition() from $children.condition
+		$attribute: Attribute1() from $condition.getAttribute()
+	then
+		//Boolean isTrue = false;
+		Integer operator = $condition.getOperatorId();
+		Integer value = $condition.getValue();
+		Integer currentValue = $attribute.getValue();	
+		
+		Result rs = evalCondition(operator, currentValue, value);
+		insert(rs);
+	end
+*/

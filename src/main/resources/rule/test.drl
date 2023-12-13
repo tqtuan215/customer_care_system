@@ -1,0 +1,38 @@
+import com.loyalty.topic1.model.GroupModel;
+import com.loyalty.topic1.model.ConditionModel;
+import com.loyalty.topic1.model.CustomerAttributeModel;
+import com.loyalty.topic1.model.AttributeModel;
+import com.loyalty.topic1.model.OperatorModel;
+
+function boolean checkCondition(String attributeValue, OperatorModel operator, String conditionValue) {
+    double attributeDouble = Double.parseDouble(attributeValue);
+    double conditionDouble = Double.parseDouble(conditionValue);
+
+    switch (operator.getNotation()) {
+        case ">":
+            return attributeDouble > conditionDouble;
+        case "<":
+            return attributeDouble < conditionDouble;
+        case "=":
+            return attributeValue.equals(conditionValue);
+        case ">=":
+            return attributeDouble >= conditionDouble;
+        case "<=":
+            return attributeDouble <= conditionDouble;
+        default:
+            throw new IllegalArgumentException("Unsupported operator: " + operator.getNotation());
+    }
+}
+
+rule "check customer attribute"
+    when
+        $customerAttribute: CustomerAttributeModel($customerId: id.customerId, $attributeId: id.attributeId, $value: value)
+        $group: GroupModel(logicModel != null, conditionModel != null, labelModel != null)
+        //$condition: ConditionModel(this == $group.getConditionModel())
+        //$operator: OperatorModel(this == $condition.getOperatorModel())
+        //eval($condition.getAttributeModel().getId() == $attributeId)
+        //eval(checkCondition($value, $operator, $condition.getValue()))
+    then
+        System.out.print("aaaa");
+        // System.out.println("Customer with ID " + $customerId + " meets the condition in group " + $group.getId() + ". Applying label " + $group.getLabelModel().getId());
+    end

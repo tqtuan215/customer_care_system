@@ -1,0 +1,63 @@
+package rule;
+
+import loyalty.team2.model.Node1;
+import loyalty.team2.model.Logic;
+import loyalty.team2.model.Condition;
+import loyalty.team2.model.Attribute1;
+import loyalty.team2.utils.Result;
+
+function Result evalCondition(Integer operator, Integer currentValue, Integer value){
+	Boolean isTrue = false;
+	switch(operator){
+			case 1:
+			{
+				if(currentValue > value)
+					isTrue = true;
+				System.out.println(currentValue+">"+value+"->"+isTrue);
+				break;
+			}
+			case 2:
+			{
+				if(currentValue < value)
+					isTrue = true;
+				System.out.println(currentValue+"<"+value+"->"+isTrue);
+				break;
+			}
+			case 3:
+			{
+				if(currentValue == value)
+					isTrue = true;
+				System.out.println(currentValue+"=="+value+"->"+isTrue);
+				break;
+			}	
+		}		
+		
+		Result rs = new Result(isTrue);
+		return rs;
+		//insert(rs);
+}
+
+/*
+rule "find children"
+	when
+		$node: Node1()
+		$children: Node1(headId == $root.nodeId)
+	then
+		System.out.println("children: "+$children);
+		insert($children);
+	end
+*/
+rule "check condition"
+	when
+		$children: Node1()
+		$condition: Condition() from $children.condition
+		$attribute: Attribute1() from $condition.getAttribute()
+	then
+		//Boolean isTrue = false;
+		Integer operator = $condition.getOperatorId();
+		Integer value = $condition.getValue();
+		Integer currentValue = $attribute.getValue();	
+		
+		Result rs = evalCondition(operator, currentValue, value);
+		insert(rs);
+	end

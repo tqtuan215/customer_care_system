@@ -1,0 +1,10 @@
+package rule
+
+import loyalty.team2.model.Purpose;
+
+rule "test"
+	when 
+		p: Purpose(p.id==1)
+	then
+		p.setPurpose(p.getPurpose()+" 1");
+	end

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import loyalty.team2.model.Purpose;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Purpose, Integer> {
+public interface PurposeRepository extends JpaRepository<Purpose, Integer> {
 	Purpose findPurposeById(Integer id);
 	Purpose findPurposeByPurpose(String s);
 	
