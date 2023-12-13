@@ -1,5 +1,6 @@
 package loyalty.team2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,10 +10,11 @@ import org.springframework.stereotype.Service;
 import loyalty.team2.model.ActionCriteriaResult;
 import loyalty.team2.model.Customer;
 import loyalty.team2.model.CustomerAttribute;
+import loyalty.team2.model.FinalAction;
 import loyalty.team2.model.Node;
 
 @Service
-public class RuleService {
+public class RuleService2 {
 
 	@Autowired
 	private NodeService NodeSv;
@@ -26,11 +28,15 @@ public class RuleService {
 	/**
 	 * all customer will be checked with all rule
 	 */
-	public void ruleForAll() {
+
+	public List<FinalAction> ruleForAll() {
 		List<Customer> customers = cusSv.getAllCustomer();
 		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+		List<FinalAction> finalActionList = new ArrayList<FinalAction>();
 
-		for (Customer customer : customers) {
+		for (Customer customer : customers) //for all customer
+		{
+			if(customer.getCustomerId()==1 || customer.getCustomerId()==2 ) {
 			List<CustomerAttribute> atts = cusAttSv.getAttribute(customer.getCustomerId()); // lay
 																							// attributes
 																							// cua 1 KH
@@ -45,17 +51,22 @@ public class RuleService {
 				} else {
 					Node root = findRoot(nodes);
 					System.out.println("root: " + root.getNodeId());
-					if (isMatchGroup(atts, root, nodes))
-						System.out.println(
-								"=> customer " + customer.getCustomerId() + " thoa " + "rule " + root.getNodeId());
-					else
+					if (isMatchGroup(atts, root, nodes)) {
+						FinalAction rs = new FinalAction();
+						rs.setCustomer(customer); // KH 1, 2
+						//rs.setCustomer();
+						rs.setAction(ACR.getActionCriteria().getAction());
+						finalActionList.add(rs);
+					} else
 						System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa " + "rule "
-								+ root.getNodeId());
+								+ root.getNodeId()); 
+						
 				}
-
 			}
-
 		}
+		} //if 1,2
+		return finalActionList;
+		
 	}
 
 	public void ruleForAllRule(List<ActionCriteriaResult> ACRs) {
@@ -104,7 +115,7 @@ public class RuleService {
 			for (CustomerAttribute item : atts) {
 				if (item.getAttribute().getAttributeId() == currentNode.getCondition().getAttribute()
 						.getAttributeId()) {
-					currentValue = item.getValue();
+					currentValue = (item.getValue());
 					System.out.println("cr val: " + currentValue);
 				}
 			}

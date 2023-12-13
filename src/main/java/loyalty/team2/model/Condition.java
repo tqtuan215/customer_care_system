@@ -25,5 +25,5 @@ public class Condition {
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "operator_id", referencedColumnName = "operatorId")	
 	private Operator operator;
-	private Integer value; 
+	private String value; 
 }

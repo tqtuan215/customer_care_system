@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import loyalty.team2.model.CustomerAttribute;
-import loyalty.team2.model.Node;
+import loyalty.team2.model.FinalAction;
 import loyalty.team2.service.CustomerAttributeService;
 import loyalty.team2.service.RuleService;
+import loyalty.team2.service.RuleService2;
 
 @RestController
 public class RuleController {
@@ -21,14 +21,16 @@ public class RuleController {
 	private RuleService ruleSv;
 	@Autowired
 	private CustomerAttributeService cusAttSv;
+	@Autowired
+	private RuleService2 ruleSv2;
 
 	@GetMapping("/rule/{id}")
 	public ResponseEntity<?> duyet1CustomerQuaRule(@PathVariable Integer id) {
 		System.out.println("rule is being checked for" + id);
 		if (ruleSv.recommend(id))
-			return new ResponseEntity<String>("rule applied", HttpStatus.OK);
+			return new ResponseEntity<String>("khach hang " + id + " thoa", HttpStatus.OK);
 		else
-			return new ResponseEntity<String>("no rule applied", HttpStatus.OK);
+			return new ResponseEntity<String>("khach hang " + id + "KHONG thoa", HttpStatus.OK);
 
 	}
 
@@ -41,22 +43,28 @@ public class RuleController {
 			return new ResponseEntity<String>("no rule applied", HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping("/rule/all")
 	public ResponseEntity<?> duyetRuleForAll() {
 		System.out.println("rule is being checked for all");
 		ruleSv.ruleForAll1Rule();
 		return new ResponseEntity<String>("done", HttpStatus.OK);
-		
+
 	}
+
 	@GetMapping("/rule/forall")
-	public ResponseEntity<?> duyetRuleForAll1() {
+	public ResponseEntity<?> duyetRuleForAllCusRule() {
 		System.out.println("rule is being checked for all");
 		ruleSv.ruleForAll();
 		return new ResponseEntity<String>("done", HttpStatus.OK);
-		
+
 	}
-	
-	
+
+	@GetMapping("/rule/forall/12")
+	public ResponseEntity<?> duyetRuleForAllJson() {
+		System.out.println("rule is being checked for all");		
+		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleForAll(), HttpStatus.OK);
+
+	}
 
 }

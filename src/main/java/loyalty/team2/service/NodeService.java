@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import loyalty.team2.model.Node;
-import loyalty.team2.model.Node1;
-import loyalty.team2.repository.CustomerAttributeRepository;
 import loyalty.team2.repository.NodeRepository;
 @Service
 public class NodeService {
