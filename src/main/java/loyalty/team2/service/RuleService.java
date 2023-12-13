@@ -28,14 +28,28 @@ public class RuleService {
 		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
 
 		for (Customer customer : customers) {
+			List<CustomerAttribute> atts = cusAttSv.getAttributeForOneCustomer(customer.getCustomerId()); // lay
+																											// attributes
+																											// cua 1 KH
 			for (ActionCriteriaResult ACR : ACRs) {
-				List<CustomerAttribute> atts = cusAttSv.getAttributeForOneCustomer(customer.getCustomerId());
-				List<Node> nodes = NodeSv.getNodesFlACR(ACR.getActionCriteriaResultId());
-				Node root = findRoot(nodes);
-				if (isMatchGroup(atts, root, nodes))
-					System.out.println("=> customer " + customer.getCustomerId() + " thoa " + "rule " + root);
-				else
-					System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa" + "rule " + root);
+				Integer ACRid = ACR.getActionCriteriaResultId();
+				System.out.println("ACR: "+ACRid);
+				List<Node> nodes = NodeSv.getNodesFlACR(ACRid); // lay 1 cay dieu kien cua 1
+																							// ACR
+				if (nodes.isEmpty()) {
+					System.out.println("ACR have no condition");
+					break;
+				} else {
+					Node root = findRoot(nodes);
+					System.out.println("root: "+root.getNodeId());
+					if (isMatchGroup(atts, root, nodes))
+						System.out.println(
+								"=> customer " + customer.getCustomerId() + " thoa " + "rule " + root.getNodeId());
+					else
+						System.out.println(
+								"=> customer " + customer.getCustomerId() + " KHONG thoa " + "rule " + root.getNodeId());
+				}
+
 			}
 
 		}

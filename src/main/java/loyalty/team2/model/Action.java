@@ -21,7 +21,7 @@ public class Action {
 	private String name;
 	private String description;
 	private LocalDateTime createdAt;
-	private LocalDateTime storedAt;
+	//private LocalDateTime storedAt;
 	private boolean isDeleted;
 	
 }
