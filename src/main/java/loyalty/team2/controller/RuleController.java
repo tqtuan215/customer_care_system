@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import loyalty.team2.model.CustomerActionWhy;
 import loyalty.team2.model.FinalAction;
+import loyalty.team2.model.FinalActionDetail;
 import loyalty.team2.service.CustomerAttributeService;
 import loyalty.team2.service.RuleService;
 import loyalty.team2.service.RuleService2;
@@ -24,14 +26,16 @@ public class RuleController {
 	@Autowired
 	private RuleService2 ruleSv2;
 
+	@GetMapping("/rule/detail")
+	public ResponseEntity<?> duyet(){
+		System.out.println("dang duyet...");
+		return new ResponseEntity<List<FinalActionDetail>>(ruleSv2.finalActionDetail(),HttpStatus.OK);
+	}
+	
 	@GetMapping("/rule/{id}")
 	public ResponseEntity<?> duyet1CustomerQuaRule(@PathVariable Integer id) {
 		System.out.println("rule is being checked for" + id);
-		if (ruleSv.recommend(id))
-			return new ResponseEntity<String>("khach hang " + id + " thoa", HttpStatus.OK);
-		else
-			return new ResponseEntity<String>("khach hang " + id + "KHONG thoa", HttpStatus.OK);
-
+		return new ResponseEntity<List<FinalAction>>(ruleSv.recommend1(id),HttpStatus.OK);
 	}
 
 	@GetMapping("/rule")
@@ -64,6 +68,13 @@ public class RuleController {
 	public ResponseEntity<?> duyetRuleForAllJson() {
 		System.out.println("rule is being checked for all");		
 		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleForAll(), HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/rule/forall/why")
+	public ResponseEntity<?> duyetRuleAndWhy() {
+		System.out.println("rule is being checked for all");		
+		return new ResponseEntity<List<CustomerActionWhy>>(ruleSv2.CusAcCon(), HttpStatus.OK);
 
 	}
 

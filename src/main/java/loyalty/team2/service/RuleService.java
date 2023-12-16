@@ -1,5 +1,6 @@
 package loyalty.team2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import loyalty.team2.model.ActionCriteriaResult;
 import loyalty.team2.model.Customer;
 import loyalty.team2.model.CustomerAttribute;
+import loyalty.team2.model.FinalAction;
 import loyalty.team2.model.Node;
 
 @Service
@@ -81,7 +83,36 @@ public class RuleService {
 	public boolean recommend(Integer id) {
 		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
 //		List<CustomerAttribute> atts = cusAttSv.getAttributeForOneCustomer(cusSv.getCustomerById(id));
-		return isMatchGroup(atts, findRoot(NodeSv.getNodesFlACR(1)), NodeSv.getNodesFlACR(1));
+		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+		for (ActionCriteriaResult ACR : ACRs) {
+			Integer ARCId = ACR.getActionCriteriaResultId();
+			return isMatchGroup(atts, findRoot(NodeSv.getNodesFlACR(ARCId)), NodeSv.getNodesFlACR(ARCId));
+		}
+		return false;
+	}
+
+	public List<FinalAction> recommend1(Integer id) {
+		List<FinalAction> FAs = new ArrayList<FinalAction>();
+		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
+		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+		
+		for (ActionCriteriaResult ACR : ACRs) {
+			Integer ARCId = ACR.getActionCriteriaResultId();
+			Node root = findRoot(NodeSv.getNodesFlACR(ARCId));
+			if (isMatchGroup(atts, root, NodeSv.getNodesFlACR(ARCId))) {
+				FinalAction rs = new FinalAction();
+				Customer c = new Customer();
+				c.setCustomerId(id);
+				rs.setCustomer(c); // KH 1, 2
+				// rs.setCustomer();
+				rs.setAction(ACR.getActionCriteria().getAction());
+				FAs.add(rs);
+			} else {
+				System.out.println("khach hang " + id + " KHONG thoa rule" + root.getNodeId());
+			}
+		}
+		return FAs;
+
 	}
 
 	public boolean recommend() {
@@ -111,8 +142,8 @@ public class RuleService {
 			Integer operator = currentNode.getCondition().getOperator().getOperatorId();
 			String value = currentNode.getCondition().getValue();
 			bl = evalCondition(currentValue, operator, value);
-			System.out.println(
-					currentValue + " " + currentNode.getCondition().getOperator().getName() + " " + value + "->" + bl);
+			System.out.println(currentValue + " " + currentNode.getCondition().getOperator().getSymbol() + " " + value
+					+ "->" + bl);
 			return bl;
 		} else {
 			boolean bl = true;

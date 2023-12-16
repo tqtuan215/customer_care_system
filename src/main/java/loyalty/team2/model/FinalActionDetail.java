@@ -1,5 +1,7 @@
 package loyalty.team2.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,17 +15,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "final_action")
-public class FinalAction {
+@Table(name = "final_action_detail")
+public class FinalActionDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private Integer finalActionId;
+	private Integer finalActionDetailId;
 	@OneToOne
-	@JoinColumn(name = "action_id", referencedColumnName = "actionId")
-	private Action action;
+	@JoinColumn(name="final_action_id", referencedColumnName = "finalActionId")
+	private FinalAction finalAction;
 	@OneToOne
-	@JoinColumn(name = "customer_id", referencedColumnName = "customerId")
-	private Customer customer;
-	private Integer lastId;
-	
+	@JoinColumn(name="action_criteria_result_id", referencedColumnName = "actionCriteriaResultId")
+	private List<ActionCriteriaResult> ACR;
+//	private ActionCriteriaResult ACR;
 }

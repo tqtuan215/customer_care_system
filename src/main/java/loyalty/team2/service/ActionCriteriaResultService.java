@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import loyalty.team2.model.ActionCriteria;
 import loyalty.team2.model.ActionCriteriaResult;
 import loyalty.team2.repository.ActionCriteriaResultRepository;
 
@@ -19,5 +20,9 @@ public class ActionCriteriaResultService {
 	
 	public ActionCriteriaResult getAllACRById(Integer id){
 		return ACRRepo.findByActionCriteriaResultId(id);
+	}
+	
+	public List<ActionCriteriaResult> getAllAcrByCriteria(ActionCriteria actionC){
+		return ACRRepo.findByActionCriteria(actionC);
 	}
 }

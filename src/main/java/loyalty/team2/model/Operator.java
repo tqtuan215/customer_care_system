@@ -17,5 +17,6 @@ public class Operator {
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	private Integer operatorId;
 	private String name;
+	private String symbol;
 
 }
