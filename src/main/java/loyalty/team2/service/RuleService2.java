@@ -159,7 +159,7 @@ public class RuleService2 {
 						}
 					}
 			}
-
+			finalAcSv.saveFinalAction(finalAction);
 		}
 
 //		finalAcSv.saveAllFinalAction(finalActionList); // luu KH nhan duoc hanh dong
