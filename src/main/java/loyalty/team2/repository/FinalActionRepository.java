@@ -10,4 +10,5 @@ import loyalty.team2.model.FinalAction;
 @Repository
 public interface FinalActionRepository extends JpaRepository<FinalAction, Integer>{
 	public FinalAction findByAction(Action action);
+	public FinalAction findByFinalActionId(int id);
 }

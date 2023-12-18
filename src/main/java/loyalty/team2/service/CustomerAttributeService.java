@@ -13,9 +13,11 @@ public class CustomerAttributeService {
 	@Autowired
 	private CustomerAttributeRepository cusAttRepo;
 	
-	public List<CustomerAttribute> getAttribute(Integer customerId) {
-		return cusAttRepo.findByCustomerId(customerId);
-	}
+	
+	
+//	public List<CustomerAttribute> getAttribute(Integer customerId) {
+//		return cusAttRepo.findByCustomerId(customerId);
+//	}
 	
 //	public List<CustomerAttribute> getAttributeForOneCustomer(Customer customer) {
 //		return cusAttRepo.findByCustomer(customer);

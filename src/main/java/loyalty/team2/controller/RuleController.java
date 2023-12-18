@@ -26,11 +26,13 @@ public class RuleController {
 	@Autowired
 	private RuleService2 ruleSv2;
 
-	@GetMapping("/rule/detail")
-	public ResponseEntity<?> duyet(){
+	@GetMapping("/rule/EAV")
+	public ResponseEntity<?> duyetTatCa(){
 		System.out.println("dang duyet...");
-		return new ResponseEntity<List<FinalActionDetail>>(ruleSv2.finalActionDetail(),HttpStatus.OK);
+		return new ResponseEntity<List<FinalAction>>(ruleSv2.getFinalActionAndDetails(),HttpStatus.OK);
 	}
+	
+	
 	
 	@GetMapping("/rule/{id}")
 	public ResponseEntity<?> duyet1CustomerQuaRule(@PathVariable Integer id) {
@@ -61,13 +63,6 @@ public class RuleController {
 		System.out.println("rule is being checked for all");
 		ruleSv.ruleForAll();
 		return new ResponseEntity<String>("done", HttpStatus.OK);
-
-	}
-
-	@GetMapping("/rule/forall/12")
-	public ResponseEntity<?> duyetRuleForAllJson() {
-		System.out.println("rule is being checked for all");		
-		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleForAll(), HttpStatus.OK);
 
 	}
 	

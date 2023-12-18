@@ -25,8 +25,8 @@ public class CustomerAttributeController {
 		return new ResponseEntity<List<CustomerAttribute>>(cusAttSv.getAllCustomerAttribute(),HttpStatus.OK);
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<List<CustomerAttribute>> getAttributesByCusId(@PathVariable Integer id){
-		return new ResponseEntity<List<CustomerAttribute>>( cusAttSv.getAttribute((id)),HttpStatus.OK);
-	}
+//	@GetMapping("/{id}")
+//	public ResponseEntity<List<CustomerAttribute>> getAttributesByCusId(@PathVariable Integer id){
+//		return new ResponseEntity<List<CustomerAttribute>>( cusAttSv.getAttribute((id)),HttpStatus.OK);
+//	}
 }

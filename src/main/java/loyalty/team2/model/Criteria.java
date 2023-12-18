@@ -2,6 +2,8 @@ package loyalty.team2.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,4 +23,5 @@ public class Criteria {
 	private String name;
 	private LocalDate createdAt;
 	private Boolean isDeleted;
+	
 }

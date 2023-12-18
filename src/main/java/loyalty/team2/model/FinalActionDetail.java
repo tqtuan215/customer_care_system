@@ -23,8 +23,8 @@ public class FinalActionDetail {
 	@OneToOne
 	@JoinColumn(name="final_action_id", referencedColumnName = "finalActionId")
 	private FinalAction finalAction;
-	@OneToOne
-	@JoinColumn(name="action_criteria_result_id", referencedColumnName = "actionCriteriaResultId")
-	private List<ActionCriteriaResult> ACR;
+//	@OneToOne
+//	@JoinColumn(name="action_criteria_result_id", referencedColumnName = "actionCriteriaResultId")
+//	private List<ActionCriteriaResult> ACR;
 //	private ActionCriteriaResult ACR;
 }

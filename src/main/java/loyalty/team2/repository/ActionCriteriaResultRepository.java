@@ -14,4 +14,6 @@ import loyalty.team2.model.ActionCriteriaResult;
 public interface ActionCriteriaResultRepository extends JpaRepository<ActionCriteriaResult, Integer>{
 	public ActionCriteriaResult findByActionCriteriaResultId(Integer actionCriteriaResultId);
 	public List<ActionCriteriaResult> findByActionCriteria(ActionCriteria actionCriteria);
+	
+	
 }

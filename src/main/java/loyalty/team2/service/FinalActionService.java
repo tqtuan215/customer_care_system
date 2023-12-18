@@ -13,16 +13,24 @@ import loyalty.team2.repository.FinalActionRepository;
 public class FinalActionService {
 	@Autowired
 	private FinalActionRepository finalAcRepo;
+
+	public List<FinalAction> getAllFinalAction(){
+		return finalAcRepo.findAll();
+	}
 	
+	public FinalAction getOneFinalAction(int id) {
+		return finalAcRepo.findByFinalActionId(id);
+	}
+
+	public FinalAction getFinalActionByAction(Action action) {
+		return finalAcRepo.findByAction(action);
+	}
+
 	public FinalAction saveFinalAction(FinalAction x) {
 		return finalAcRepo.save(x);
 	}
-	
-	public List<FinalAction> saveAllFinalAction(List<FinalAction> list){
+
+	public List<FinalAction> saveAllFinalAction(List<FinalAction> list) {
 		return finalAcRepo.saveAll(list);
-	}
-	
-	public FinalAction getFinalActionByAction(Action action) {
-		return finalAcRepo.findByAction(action);
 	}
 }
