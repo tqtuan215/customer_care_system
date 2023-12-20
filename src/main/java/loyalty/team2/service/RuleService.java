@@ -28,92 +28,92 @@ public class RuleService {
 	/**
 	 * all customer will be checked with all rule
 	 */
-	public void ruleForAll() {
-		List<Customer> customers = cusSv.getAllCustomer();
-		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+//	public void ruleForAll() {
+//		List<Customer> customers = cusSv.getAllCustomer();
+//		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+//
+//		for (Customer customer : customers) {
+//			List<CustomerAttribute> atts = cusAttSv.getAttribute(customer.getCustomerId()); // lay
+//																							// attributes
+//																							// cua 1 KH
+//			for (ActionCriteriaResult ACR : ACRs) {
+//				Integer ACRid = ACR.getActionCriteriaResultId();
+//				System.out.println("ACR: " + ACRid);
+//				List<Node> nodes = NodeSv.getNodesFlACR(ACRid); // lay 1 cay dieu kien cua 1
+//																// ACR
+//				if (nodes.isEmpty()) {
+//					System.out.println("ACR have no condition");
+//					break;
+//				} else {
+//					Node root = findRoot(nodes);
+//					System.out.println("root: " + root.getNodeId());
+//					if (isMatchGroup(atts, root, nodes))
+//						System.out.println(
+//								"=> customer " + customer.getCustomerId() + " thoa " + "rule " + root.getNodeId());
+//					else
+//						System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa " + "rule "
+//								+ root.getNodeId());
+//				}
+//
+//			}
+//
+//		}
+//	}
+//
+//	public void ruleForAllRule(List<ActionCriteriaResult> ACRs) {
+//		List<Customer> customers = cusSv.getAllCustomer();
+//		for (Customer customer : customers) {
+//			if (recommend(customer.getCustomerId()))
+//				System.out.println("=> customer " + customer.getCustomerId() + " thoa");
+//			else
+//				System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa");
+//		}
+//	}
+//
+//	public void ruleForAll1Rule() {
+//		List<Customer> customers = cusSv.getAllCustomer();
+//		for (Customer customer : customers) {
+//			if (recommend(customer.getCustomerId()))
+//				System.out.println("=> customer " + customer.getCustomerId() + " thoa");
+//			else
+//				System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa");
+//		}
+//	}
 
-		for (Customer customer : customers) {
-			List<CustomerAttribute> atts = cusAttSv.getAttribute(customer.getCustomerId()); // lay
-																							// attributes
-																							// cua 1 KH
-			for (ActionCriteriaResult ACR : ACRs) {
-				Integer ACRid = ACR.getActionCriteriaResultId();
-				System.out.println("ACR: " + ACRid);
-				List<Node> nodes = NodeSv.getNodesFlACR(ACRid); // lay 1 cay dieu kien cua 1
-																// ACR
-				if (nodes.isEmpty()) {
-					System.out.println("ACR have no condition");
-					break;
-				} else {
-					Node root = findRoot(nodes);
-					System.out.println("root: " + root.getNodeId());
-					if (isMatchGroup(atts, root, nodes))
-						System.out.println(
-								"=> customer " + customer.getCustomerId() + " thoa " + "rule " + root.getNodeId());
-					else
-						System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa " + "rule "
-								+ root.getNodeId());
-				}
-
-			}
-
-		}
-	}
-
-	public void ruleForAllRule(List<ActionCriteriaResult> ACRs) {
-		List<Customer> customers = cusSv.getAllCustomer();
-		for (Customer customer : customers) {
-			if (recommend(customer.getCustomerId()))
-				System.out.println("=> customer " + customer.getCustomerId() + " thoa");
-			else
-				System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa");
-		}
-	}
-
-	public void ruleForAll1Rule() {
-		List<Customer> customers = cusSv.getAllCustomer();
-		for (Customer customer : customers) {
-			if (recommend(customer.getCustomerId()))
-				System.out.println("=> customer " + customer.getCustomerId() + " thoa");
-			else
-				System.out.println("=> customer " + customer.getCustomerId() + " KHONG thoa");
-		}
-	}
-
-	public boolean recommend(Integer id) {
-		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
-//		List<CustomerAttribute> atts = cusAttSv.getAttributeForOneCustomer(cusSv.getCustomerById(id));
-		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
-		for (ActionCriteriaResult ACR : ACRs) {
-			Integer ARCId = ACR.getActionCriteriaResultId();
-			return isMatchGroup(atts, findRoot(NodeSv.getNodesFlACR(ARCId)), NodeSv.getNodesFlACR(ARCId));
-		}
-		return false;
-	}
-
-	public List<FinalAction> recommend1(Integer id) {
-		List<FinalAction> FAs = new ArrayList<FinalAction>();
-		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
-		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
-		
-		for (ActionCriteriaResult ACR : ACRs) {
-			Integer ARCId = ACR.getActionCriteriaResultId();
-			Node root = findRoot(NodeSv.getNodesFlACR(ARCId));
-			if (isMatchGroup(atts, root, NodeSv.getNodesFlACR(ARCId))) {
-				FinalAction rs = new FinalAction();
-				Customer c = new Customer();
-				c.setCustomerId(id);
-				rs.setCustomer(c); // KH 1, 2
-				// rs.setCustomer();
-				rs.setAction(ACR.getActionCriteria().getAction());
-				FAs.add(rs);
-			} else {
-				System.out.println("khach hang " + id + " KHONG thoa rule" + root.getNodeId());
-			}
-		}
-		return FAs;
-
-	}
+//	public boolean recommend(Integer id) {
+//		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
+////		List<CustomerAttribute> atts = cusAttSv.getAttributeForOneCustomer(cusSv.getCustomerById(id));
+//		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+//		for (ActionCriteriaResult ACR : ACRs) {
+//			Integer ARCId = ACR.getActionCriteriaResultId();
+//			return isMatchGroup(atts, findRoot(NodeSv.getNodesFlACR(ARCId)), NodeSv.getNodesFlACR(ARCId));
+//		}
+//		return false;
+//	}
+//
+//	public List<FinalAction> recommend1(Integer id) {
+//		List<FinalAction> FAs = new ArrayList<FinalAction>();
+//		List<CustomerAttribute> atts = cusAttSv.getAttribute(id);
+//		List<ActionCriteriaResult> ACRs = ACRSv.getAllACR();
+//		
+//		for (ActionCriteriaResult ACR : ACRs) {
+//			Integer ARCId = ACR.getActionCriteriaResultId();
+//			Node root = findRoot(NodeSv.getNodesFlACR(ARCId));
+//			if (isMatchGroup(atts, root, NodeSv.getNodesFlACR(ARCId))) {
+//				FinalAction rs = new FinalAction();
+//				Customer c = new Customer();
+//				c.setCustomerId(id);
+//				rs.setCustomer(c); // KH 1, 2
+//				// rs.setCustomer();
+//				rs.setAction(ACR.getActionCriteria().getAction());
+//				FAs.add(rs);
+//			} else {
+//				System.out.println("khach hang " + id + " KHONG thoa rule" + root.getNodeId());
+//			}
+//		}
+//		return FAs;
+//
+//	}
 
 	public boolean recommend() {
 		List<CustomerAttribute> atts = cusAttSv.getAllCustomerAttribute();

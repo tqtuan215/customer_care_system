@@ -1,6 +1,5 @@
 package loyalty.team2.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,18 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "final_action_attribute")
-public class FinalActionAttribute {
+@Table(name = "log")
+public class Log {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer finalActionAttributeId;
-//	private String attribute;
-	
+	private Integer log_id;
 	@ManyToOne
-	@JoinColumn(name="attribute", referencedColumnName = "name", unique = true)	
-	private Criteria criteria;
+	@JoinColumn(name = "final_action_event_id")
+	private FinalActionEvent finalActionEvent;
+	@ManyToOne
+	@JoinColumn(name = "final_action_id")
+	private FinalAction finalAction;	
+	@ManyToOne
+	@JoinColumn(name = "conditon_id")
+	private Condition condition;
 	
-	// khong lưu vào DB
-//	@OneToOne(mappedBy="finalActionAttribute")
-//	private FinalActionAttribute finalActionAttribute;
+	private String customerValue;
 }
