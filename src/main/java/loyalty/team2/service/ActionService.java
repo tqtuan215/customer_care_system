@@ -1,5 +1,7 @@
 package loyalty.team2.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,10 @@ public class ActionService {
 	private ActionRepository actionRepo;
 
 	public Action getOneAction(int id) {
-
 		return actionRepo.findByActionId(id);
+	}
+	
+	public List<Action> getAllAction(){
+		return actionRepo.findAll();
 	}
 }

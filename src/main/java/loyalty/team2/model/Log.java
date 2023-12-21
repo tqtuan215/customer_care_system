@@ -1,5 +1,6 @@
 package loyalty.team2.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,14 +19,17 @@ public class Log {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer log_id;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "final_action_event_id")
 	private FinalActionEvent finalActionEvent;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "final_action_id")
-	private FinalAction finalAction;	
-	@ManyToOne
-	@JoinColumn(name = "conditon_id")
+	private FinalAction finalAction;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "final_action_value_id")
+	private FinalActionValue finalActionValue;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "condition_id")
 	private Condition condition;
 	
 	private String customerValue;

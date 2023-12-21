@@ -33,4 +33,8 @@ public class FinalActionService {
 	public List<FinalAction> saveAllFinalAction(List<FinalAction> list) {
 		return finalAcRepo.saveAll(list);
 	}
+	
+	public FinalAction update(FinalAction fa) {
+		return finalAcRepo.saveAndFlush(fa);
+	}
 }

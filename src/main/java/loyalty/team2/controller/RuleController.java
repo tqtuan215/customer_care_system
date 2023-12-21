@@ -32,6 +32,61 @@ public class RuleController {
 	@Autowired
 	private RuleService2 ruleSv2;
 	
+	@PostMapping("/api/upload-excel/log")
+	public ResponseEntity<List<FinalAction>> uploadExcel2(@RequestParam("file") MultipartFile file) throws IOException {
+		System.out.println("start: ");
+		List<Customer> customers = new ArrayList<>();
+		if (!file.isEmpty()) {
+			try {
+				InputStream inputStream = file.getInputStream();
+				// Lấy file Excel từ request
+				Workbook workbook = WorkbookFactory.create(inputStream);
+
+				// Lấy sheet đầu tiên
+				Sheet sheet = workbook.getSheetAt(0);
+				System.out.println("check: ");
+				// Lấy dữ liệu từ sheet
+				for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
+					// Kiểm tra xem ô đầu tiên của cột đó có giá trị là "id" hay không
+					Cell cell = sheet.getRow(0).getCell(i);
+					System.out.println("i " + i + " - cell: " + cell.getStringCellValue());
+					if (cell.getStringCellValue().equals("id")) {
+						// Tạo một mảng để chứa dữ liệu của cột đó
+						Integer[] data = new Integer[sheet.getPhysicalNumberOfRows() - 1];
+
+						// Lặp qua các hàng trong sheet, bắt đầu từ hàng thứ hai
+						for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
+							// Lấy dữ liệu từ ô thứ hai của cột đó
+							Cell cell2 = sheet.getRow(j).getCell(i);
+
+							// Thêm dữ liệu đó vào mảng
+							data[j - 1] = (int) cell2.getNumericCellValue();
+						}
+
+						// In dữ liệu trong mảng
+						for (Integer value : data) {
+							Customer cus = new Customer();
+							
+							cus.setCustomerId((value));
+							customers.add(cus);
+						}
+
+						// Thoát khỏi vòng lặp
+						break;
+					}
+				}
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("error: " + e);
+			}
+		}
+		for (Customer x : customers)
+			System.out.println(x.getCustomerId());
+		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleExcelEventLog(customers), HttpStatus.OK);
+	}
+	
+	/*
 	@PostMapping("/api/upload-excel/2")
 	public ResponseEntity<List<FinalAction>> uploadExcel2(@RequestParam("file") MultipartFile file) throws IOException {
 		System.out.println("start: ");
@@ -84,60 +139,60 @@ public class RuleController {
 			System.out.println(x.getCustomerId());
 		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleExcelEvent(customers), HttpStatus.OK);
 	}
+	*/
 	
-	
-	@PostMapping("/api/upload-excel/1")
-	public ResponseEntity<List<FinalAction>> uploadExcel1(@RequestParam("file") MultipartFile file) throws IOException {
-		System.out.println("start: ");
-		List<Customer> customers = new ArrayList<>();
-		if (!file.isEmpty()) {
-			try {
-				InputStream inputStream = file.getInputStream();
-				// Lấy file Excel từ request
-				Workbook workbook = WorkbookFactory.create(inputStream);
-
-				// Lấy sheet đầu tiên
-				Sheet sheet = workbook.getSheetAt(0);
-				System.out.println("check: ");
-				// Lấy dữ liệu từ sheet
-				for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-					// Kiểm tra xem ô đầu tiên của cột đó có giá trị là "id" hay không
-					Cell cell = sheet.getRow(0).getCell(i);
-					System.out.println("i " + i + " - cell: " + cell.getStringCellValue());
-					if (cell.getStringCellValue().equals("id")) {
-						// Tạo một mảng để chứa dữ liệu của cột đó
-						Integer[] data = new Integer[sheet.getPhysicalNumberOfRows() - 1];
-
-						// Lặp qua các hàng trong sheet, bắt đầu từ hàng thứ hai
-						for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
-							// Lấy dữ liệu từ ô thứ hai của cột đó
-							Cell cell2 = sheet.getRow(j).getCell(i);
-
-							// Thêm dữ liệu đó vào mảng
-							data[j - 1] = (int) cell2.getNumericCellValue();
-						}
-
-						// In dữ liệu trong mảng
-						for (Integer value : data) {
-							Customer cus = new Customer();
-							cus.setCustomerId((value));
-							customers.add(cus);
-						}
-
-						// Thoát khỏi vòng lặp
-						break;
-					}
-				}
-
-			} catch (Exception e) {
-				// TODO: handle exception
-				System.out.println("error: " + e);
-			}
-		}
-		for (Customer x : customers)
-			System.out.println(x.getCustomerId());
-		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleExcel(customers), HttpStatus.OK);
-	}
+//	@PostMapping("/api/upload-excel/1")
+//	public ResponseEntity<List<FinalAction>> uploadExcel1(@RequestParam("file") MultipartFile file) throws IOException {
+//		System.out.println("start: ");
+//		List<Customer> customers = new ArrayList<>();
+//		if (!file.isEmpty()) {
+//			try {
+//				InputStream inputStream = file.getInputStream();
+//				// Lấy file Excel từ request
+//				Workbook workbook = WorkbookFactory.create(inputStream);
+//
+//				// Lấy sheet đầu tiên
+//				Sheet sheet = workbook.getSheetAt(0);
+//				System.out.println("check: ");
+//				// Lấy dữ liệu từ sheet
+//				for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
+//					// Kiểm tra xem ô đầu tiên của cột đó có giá trị là "id" hay không
+//					Cell cell = sheet.getRow(0).getCell(i);
+//					System.out.println("i " + i + " - cell: " + cell.getStringCellValue());
+//					if (cell.getStringCellValue().equals("id")) {
+//						// Tạo một mảng để chứa dữ liệu của cột đó
+//						Integer[] data = new Integer[sheet.getPhysicalNumberOfRows() - 1];
+//
+//						// Lặp qua các hàng trong sheet, bắt đầu từ hàng thứ hai
+//						for (int j = 1; j < sheet.getPhysicalNumberOfRows(); j++) {
+//							// Lấy dữ liệu từ ô thứ hai của cột đó
+//							Cell cell2 = sheet.getRow(j).getCell(i);
+//
+//							// Thêm dữ liệu đó vào mảng
+//							data[j - 1] = (int) cell2.getNumericCellValue();
+//						}
+//
+//						// In dữ liệu trong mảng
+//						for (Integer value : data) {
+//							Customer cus = new Customer();
+//							cus.setCustomerId((value));
+//							customers.add(cus);
+//						}
+//
+//						// Thoát khỏi vòng lặp
+//						break;
+//					}
+//				}
+//
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//				System.out.println("error: " + e);
+//			}
+//		}
+//		for (Customer x : customers)
+//			System.out.println(x.getCustomerId());
+//		return new ResponseEntity<List<FinalAction>>(ruleSv2.ruleExcel(customers), HttpStatus.OK);
+//	}
 	
 	@PostMapping("/api/upload-excel")
 	public ResponseEntity<List<Customer>> uploadExcel(@RequestParam("file") MultipartFile file) throws IOException {
@@ -192,11 +247,11 @@ public class RuleController {
 		return new ResponseEntity<List<Customer>>(customers, HttpStatus.OK);
 	}
 
-	@GetMapping("/rule/EAV")
-	public ResponseEntity<?> duyetTatCa() {
-		System.out.println("dang duyet...");
-		return new ResponseEntity<List<FinalAction>>(ruleSv2.getFinalActionAndDetails(), HttpStatus.OK);
-	}
+//	@GetMapping("/rule/EAV")
+//	public ResponseEntity<?> duyetTatCa() {
+//		System.out.println("dang duyet...");
+//		return new ResponseEntity<List<FinalAction>>(ruleSv2.getFinalActionAndDetails(), HttpStatus.OK);
+//	}
 
 	@GetMapping("/rule")
 	public ResponseEntity<?> duyetRule() {

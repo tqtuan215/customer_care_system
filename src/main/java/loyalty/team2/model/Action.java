@@ -26,7 +26,7 @@ public class Action {
 	private String description;
 	private LocalDateTime createdAt;
 	// private LocalDateTime storedAt;
-	private boolean isDeleted;
+	private boolean isDeleted = false;
 
 	@OneToMany(mappedBy = "action")
 	@JsonManagedReference
